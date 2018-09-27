@@ -1,0 +1,106 @@
+<nb-card >
+  <nb-card-body> 
+   <div class="flex-centered col-xl-5 col-lg-12 col-md-12 col-sm-12" center>
+      <h2 class="title">
+        Registro de productos
+      </h2>
+      <nb-alert *ngIf="save" status="success" class="centered-text">
+          Credito solicitado con exito!
+      </nb-alert>
+      <div *ngIf="this.showErrors">
+          <nb-alert *ngIf="this.showErrors.length > 0" outline="danger" status="danger">
+              <div > 
+                  <strong>Oh snap!</strong>
+                  <div *ngFor="let error of this.showErrors">{{ error.value }}</div>
+              </div>
+          </nb-alert>
+      </div>
+      
+      <form (ngSubmit)="fnSubmit(form)" #form="ngForm" autocomplete="nope">
+          <div class="form-row">
+              <div class="col-12 col-sm-6 col-md-6">
+                  <input nbInput
+                  [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : ''"
+                  [(ngModel)]="products.name" #name="ngModel"
+                  type="text"
+                  name="name" id="input-name" 
+                  placeholder="Nombre del producto" autofocus fullWidth
+                  [required] = "true"
+                  [minlength]="3"
+                  [maxlength]="70"
+                  >
+                  <small class="form-text error" *ngIf="name.invalid && name.errors?.required"> El campo es requerido</small>
+                  <small class="form-text error" *ngIf="name.invalid && name.touched && name.errors?.minlength"> El campo minimo de 3 caracteres</small>
+                  <small class="form-text error" *ngIf="name.invalid && name.touched && name.errors?.maxlength"> El campo es maximo de 50 caracteres</small>
+              </div>
+              <div class="col-12 col-sm-6 col-md-6">
+                  <input nbInput
+                  [status]="quantity.dirty ? (quantity.invalid  ? 'danger' : 'success') : ''"
+                  [(ngModel)]="products.quantity" #quantity="ngModel"
+                  type="number"
+                  name="quantity" id="input-quantity" 
+                  placeholder="Cantidad" autofocus fullWidth
+                  [required] = "true"
+                  >
+                  <small class="form-text error" *ngIf="quantity.invalid && quantity.errors?.required"> El campo es requerido</small>
+                  <small class="form-text error" *ngIf="validationQuantity === false">
+                        La cantidad debe ser entre; <br>
+                        10 - 1000 unidades
+                    </small>
+              </div>
+          </div>
+          <div class="form-row">
+                <div class="col-12 col-sm-6 col-md-6">
+                    <input nbInput
+                    [status]="value.dirty ? (value.invalid  ? 'danger' : 'success') : ''"
+                    [(ngModel)]="products.value" #value="ngModel"
+                    type="number"
+                    name="value" id="input-value" 
+                    placeholder="Valor" autofocus fullWidth
+                    [required] = "true"
+                    >
+                    <small class="form-text error" *ngIf="value.invalid && value.errors?.required"> El campo es requerido</small>
+                    <small class="form-text error" *ngIf="validationCost === false">
+                        El valor del producto debe ser entre; <br>
+                        $800 - $10000000
+                    </small>
+                </div>
+                <div class="col-12 col-sm-6 col-md-6">
+                    <select 
+                        [(ngModel)]="products.status" #status="ngModel"
+                        name="status"
+                        [required] = "true"
+                        class="form-control form-control-select" 
+                        id="input-status">
+                        <option value="no disponible">No disponible</option>
+                        <option value="disponible">Disponible</option>
+                    </select>
+                    <small class="form-text error" *ngIf="(status.invalid && status.errors?.required) || this.valideStatus === false"> El campo es requerido</small>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12 col-sm-12 col-md-12">
+                    <textarea 
+                        nbInput
+                        [status]="description.dirty ? (description.invalid  ? 'danger' : 'success') : ''"
+                        [(ngModel)]="products.description" #description="ngModel"
+                        class="form-control" 
+                        name="description"
+                        placeholder="Descripción" 
+                        [required] = "true"
+                        id="input-description"
+                        [minlength]="3"
+                        [maxlength]="70"
+                        rows="5"></textarea>
+                </div>
+                <small class="form-text error" *ngIf="description.invalid && description.errors?.required"> El campo es requerido</small>
+                <small class="form-text error" *ngIf="description.invalid && description.touched && description.errors?.minlength"> El campo minimo de 3 caracteres</small>
+                <small class="form-text error" *ngIf="description.invalid && description.touched && description.errors?.maxlength"> El campo es maximo de 50 caracteres</small>
+            </div>
+            <button nbButton status="success" fullWidth  [disabled]="this.validationQuantity === false || this.valideStatus === false || this.validationCost === false || form.invalid"> 
+                Enviar
+            </button>  
+      </form> 
+  </div>
+  </nb-card-body>
+</nb-card>       
